@@ -10,7 +10,7 @@ env:
   GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
 
 jobs: 
-  docker: 
+  docker-build: 
     runs-on: ubuntu-latest
     steps:
     - name: Inject slug/short variables
@@ -45,7 +45,21 @@ jobs:
 #        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:${{ GITHUB_SHA_SHORT }}
 
   
-#  change-helm:
+change-image-tag-helm: git 
+  image: 
+    name: robertsilvatech/ubuntu-with-git:20.04
+    entrypoint: [ '/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
+  needs: 
+    - docker-build
+  stage: change-image-tag
+  variables:
+    CONFIG_REPO_NAME: gitops-example
+    PROJECT_FOLDER: sample-python-application
+  before_script:
+    - git config --global user.email "deivid@dcpilla.eti.br" && git config --global user.name "Deivid Pilla" 
+
+
+
 
 
 
