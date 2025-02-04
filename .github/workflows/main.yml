@@ -33,8 +33,8 @@ jobs:
       run: |
         echo "commit sha ${GITHUB_SHA}"
         docker build . --file Dockerfile --tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:latest
-        docker tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:latest ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:${GITHUB_SHA_SHORT}"
-        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:${GITHUB_SHA_SHORT}"
+        docker tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:latest ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:${{ GITHUB_SHA_SHORT }}
+        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:${{ GITHUB_SHA_SHORT }}
 
   
 #  change-helm:
