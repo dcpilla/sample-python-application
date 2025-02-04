@@ -21,11 +21,13 @@ jobs:
       with: 
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+        login-server: ${{ secrets.DOCKER_CONTAINER_REGISTRY }}
 
     - name: Build e Push no Azure Container Registry
       run: |
-        docker build . --file Dockerfile --tag docker.io/dcpilla/${{ env.GITHUB_REPOSITORY_NAME }}:${{ env.GITHUB_SHA }}
-        docker push docker.io/dcpilla/${{ env.GITHUB_REPOSITORY_NAME }}:${{ env.GITHUB_SHA }}
+        docker build . --file Dockerfile --tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ GITHUB_REPOSITORY_NAME }}:latest
+        docker tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ GITHUB_REPOSITORY_NAME }}:latest ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ GITHUB_REPOSITORY_NAME }}:${{ env.GITHUB_SHA }}
+        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ GITHUB_REPOSITORY_NAME }}:${{ env.GITHUB_SHA }}
 
   
 #  change-helm:
