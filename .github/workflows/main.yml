@@ -20,8 +20,8 @@ jobs:
 
     - name: Build e Push no Azure Container Registry
       run: |
-        docker build . --file Dockerfile --tag ${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}
-        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}
+        docker build . --file Dockerfile --tag ${{ GITHUB_REPOSITORY_NAME }}:${{ GITHUB_SHA_SHORT }}
+        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ GITHUB_REPOSITORY_NAME }}:${{ GITHUB_SHA_SHORT }}
 
   
 #  change-helm:
