@@ -29,7 +29,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         login-server: ${{ secrets.DOCKER_CONTAINER_REGISTRY }}
 
-     - name: Build e Push no Azure Container Registry
+    - name: Build e Push no Azure Container Registry
       run: |
         echo "commit sha ${GITHUB_SHA}"
         docker build . --file Dockerfile --tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${GITHUB_REPOSITORY_NAME_PART}:latest
