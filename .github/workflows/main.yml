@@ -12,7 +12,13 @@ env:
 jobs: 
   docker: 
     runs-on: ubuntu-latest
-    steps: 
+    steps:
+    - name: Inject slug/short variables
+      uses: rlespinasse/github-slug-action@v4
+    - run: echo ${GITHUB_REPOSITORY}
+#    - run: echo ${GITHUB_REPOSITORY_NAME_PART}
+#    - run: echo ${GITHUB_SERVER_URL}
+
     - name: Checkout
       uses: actions/checkout@v4
       
@@ -25,9 +31,10 @@ jobs:
 
     - name: Build e Push no Azure Container Registry
       run: |
+        echo "commit sha ${GITHUB_SHA}"
         docker build . --file Dockerfile --tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:latest
-        docker tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:latest ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:latest
-        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:latest
+        docker tag ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:latest ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:${GITHUB_SHA_SHORT}"
+        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:${GITHUB_SHA_SHORT}"
 
   
 #  change-helm:
