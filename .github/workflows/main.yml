@@ -7,6 +7,7 @@ on:
 
 env:
   GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
+  GITHUB_SHA: ${{ github.event.pull_request.head.sha }}
 
 jobs: 
   docker: 
@@ -23,8 +24,8 @@ jobs:
 
     - name: Build e Push no Azure Container Registry
       run: |
-        docker build . --file Dockerfile --tag ${{ env.GITHUB_REPOSITORY_NAME }}:${{ GITHUB_SHA }}
-        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:${{ GITHUB_SHA }}
+        docker build . --file Dockerfile --tag ${{ env.GITHUB_REPOSITORY_NAME }}:${{ env.GITHUB_SHA }}
+        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ env.GITHUB_REPOSITORY_NAME }}:${{ env.GITHUB_SHA }}
 
   
 #  change-helm:
