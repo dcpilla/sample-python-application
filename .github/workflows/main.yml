@@ -49,7 +49,7 @@ jobs:
     - run: echo ${GITHUB_REPOSITORY_NAME_PART}
 
     - name: change-image-tag
-      uses: name: robertsilvatech/ubuntu-with-git:20.04
+      uses: robertsilvatech/ubuntu-with-git:20.04
     - run: entrypoint: [ '/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
 
       uses: 
