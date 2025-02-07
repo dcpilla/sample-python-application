@@ -48,32 +48,36 @@ jobs:
     - run: echo ${GITHUB_REPOSITORY}
     - run: echo ${GITHUB_REPOSITORY_NAME_PART}
 
-    - name: change-image-tag
-      uses: robertsilvatech/ubuntu-with-git:20.04
-    - run: entrypoint [ '/bin/bash', '-c', 'ln -snf /bin/bash /bin/sh && /bin/bash -c $0' ]
+    - name: INstall git
+      run: | 
+        apt-get install -y git
+        git --version
+        echo "Path is ... $PATH"
+        PATH=$PATH:$(which git)
+        echo "Path is ... $PATH"
 
-      uses: 
-      variables:
+    - uses: actions/checkout@v2
+
+    - name: commit
+      env: 
         CONFIG_REPO_NAME: gitops-example
         PROJECT_FOLDER: sample-python-application
 
-      before_script:
-      - git config --global user.email "deivid@dcpilla.eti.br" && git config --global user.name "Deivid Pilla"  
-
-      scripts:
-        - echo "cloning config repo ${CONFIG_REPO_NAME}"
-        - git clone "https://dcpilla:${{ secrets.GIT_TOKEN }}@gitlab.com/dcpilla/${CONFIG_REPO_NAME}.git"
-        - echo "Enter ${CONFIG_REPO_NAME}"
-        - cd $CONFIG_REPO_NAME
-        - echo "list files"
-        - ls -lh
-        - git remote -v
-        - git checkout -b teste-${GITHUB_COMMIT_REF_SLUG}-${GITHUB_SHA_SHORT}
-        - 'ls $PROJECT_FOLDER/helm/values-$CI_COMMIT_REF_SLUG*.yaml | xargs sed -i -r "s/tag: (.*)/tag: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA/g"'
-        - git status
-        - git add .
-        - git commit -m "Update image tag from CI  on $CI_PROJECT_NAME - $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-        - git push origin $CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+      run: | 
+       git config --global user.email "deivid@dcpilla.eti.br" && git config --global user.name "Deivid Pilla"  
+       echo "cloning config repo ${CONFIG_REPO_NAME}"
+       git clone "https://dcpilla:${{ secrets.GIT_TOKEN }}@gitlab.com/dcpilla/${CONFIG_REPO_NAME}.git"
+       echo "Enter ${CONFIG_REPO_NAME}"
+       cd $CONFIG_REPO_NAME
+       echo "list files"
+       ls -lh
+       git remote -v
+       git checkout -b teste-${GITHUB_COMMIT_REF_SLUG}-${GITHUB_SHA_SHORT}
+       'ls $PROJECT_FOLDER/helm/values-$CI_COMMIT_REF_SLUG*.yaml | xargs sed -i -r "s/tag: (.*)/tag: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA/g"'
+       git status
+       git add .
+       git commit -m "Update image tag from CI  on $CI_PROJECT_NAME - $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+       git push origin $CI_PROJECT_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
 
 
 
