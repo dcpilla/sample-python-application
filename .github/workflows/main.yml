@@ -52,9 +52,6 @@ jobs:
       run: | 
         apt-get install -y git
         git --version
-        echo "Path is ... $PATH"
-        PATH=$PATH:$(which git)
-        echo "Path is ... $PATH"
 
     - uses: actions/checkout@v2
 
