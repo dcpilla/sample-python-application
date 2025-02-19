@@ -9,6 +9,11 @@ jobs:
   docker: 
     runs-on: ubuntu-latest
     steps: 
+    - name: Inject slug/short variables
+      uses: rlespinasse/github-slug-action@v4
+    - run: echo ${GITHUB_REPOSITORY}
+    - run: echo ${GITHUB_REPOSITORY_NAME_PART}
+  
     - name: Checkout
       uses: actions/checkout@v4
       
@@ -17,9 +22,11 @@ jobs:
       with: 
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+        login-server: ${{ secrets.DOCKER_CONTAINER_REGISTRY }}
 
     - name: Build e Push no Azure Container Registry
       run: |
+        echo "commit sha ${GITHUB_SHA}"        
         docker build . --file Dockerfile --tag ${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}
         docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}
 
