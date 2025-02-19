@@ -30,7 +30,7 @@ jobs:
       with:
         repository: https://github.com/dcpilla/gitops-example.git
         path: sample-python-application/helm
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GIT_TOKEN }}
 
 
     # 7. Atualizar a versão da imagem no values.yaml do ambiente correspondente
