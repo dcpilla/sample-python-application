@@ -53,7 +53,7 @@ jobs:
         echo "List files"
         ls -lh sample-python-application/helm
         ENVIRONMENT="dev" 
-        # sed -i "s|image: docker.io/dcpilla/${GITHUB_REPOSITORY_NAME_PART}:* |image: docker.io/dcpilla/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}|g" sample-python-application/helm/values-dev.yaml
+        # sed -i "s|image: docker.io/dcpilla/${GITHUB_REPOSITORY_NAME_PART}:.*|image: docker.io/dcpilla/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}|g" sample-python-application/helm/values-dev.yaml
         git config --global user.name "Deivid Pilla"
         git config --global user.email "deivid@dcpilla.eti.br"
         git add .
