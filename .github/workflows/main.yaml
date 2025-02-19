@@ -51,7 +51,7 @@ jobs:
       run: |
         cd helm-config
         ENVIRONMENT="dev"  # Defina o ambiente dinamicamente (ex: usando uma variável de ambiente ou input)
-        sed -i "s|image: dcpilla/${GITHUB_REPOSITORY_NAME_PART}:.*|image: dcpilla/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}|g" values-$ENVIRONMENT.yaml
+        sed -i "s|image: dcpilla/${GITHUB_REPOSITORY_NAME_PART}:.*|image: dcpilla/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}|g" ${GITHUB_REPOSITORY_NAME_PART}/helm/values-$ENVIRONMENT.yaml
         git config --global user.name "Deivid Pilla"
         git config --global user.email "deivid@dcpilla.eti.br"
         git add .
