@@ -50,6 +50,8 @@ jobs:
     - name: Update image version in Helm values
       run: |
         cd sample-python-application/helm
+        echo "List files"
+        ls -lh
         ENVIRONMENT="dev"  # Defina o ambiente dinamicamente (ex: usando uma variável de ambiente ou input)
         sed -i "s|image: dcpilla/${GITHUB_REPOSITORY_NAME_PART}:.*|image: dcpilla/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}|g" values-$ENVIRONMENT.yaml
         git config --global user.name "Deivid Pilla"
