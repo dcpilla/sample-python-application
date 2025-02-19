@@ -51,7 +51,7 @@ jobs:
       run: |
         cd sample-python-application/helm
         echo "List files"
-        ls -lh
+        ls -lh ${GITHUB_REPOSITORY_NAME_PART}/helm/
         ENVIRONMENT="dev"  # Defina o ambiente dinamicamente (ex: usando uma variável de ambiente ou input)
         sed -i "s|image: dcpilla/${GITHUB_REPOSITORY_NAME_PART}:.*|image: dcpilla/${GITHUB_REPOSITORY_NAME_PART}:${GITHUB_SHA_SHORT}|g" ${GITHUB_REPOSITORY_NAME_PART}/helm/values-$ENVIRONMENT.yaml
         git config --global user.name "Deivid Pilla"
