@@ -1,47 +1,47 @@
-name: cicd
+# name: cicd
 
-on: 
-  push: 
-    branches: 
-      - main
+# on: 
+#   push: 
+#     branches: 
+#       - main
 
-jobs: 
-  docker: 
-    runs-on: ubuntu-latest
-    steps: 
-    - name: Checkout
-      uses: actions/checkout@v4
+# jobs: 
+#   docker: 
+#     runs-on: ubuntu-latest
+#     steps: 
+#     - name: Checkout
+#       uses: actions/checkout@v4
       
-    - name: Login Docker Hub
-      uses: docker/login-action@v3
-      with: 
-        username: ${{ vars.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+#     - name: Login Docker Hub
+#       uses: docker/login-action@v3
+#       with: 
+#         username: ${{ vars.DOCKERHUB_USERNAME }}
+#         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build e Push no Azure Container Registry
-      run: |
-        docker build . --file Dockerfile --tag ${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}
-        docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}
+#     - name: Build e Push no Azure Container Registry
+#       run: |
+#         docker build . --file Dockerfile --tag ${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}
+#         docker push ${{ secrets.DOCKER_CONTAINER_REGISTRY }}/${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}
 
   
-    # 6. Checkout do repositório de configuração do Helm
-    - name: Checkout Helm config repo
-      uses: actions/checkout@v3
-      with:
-        repository: https://github.com/dcpilla/gitops-example.git
-        path: sample-python-application/helm
-        token: ${{ secrets.GITHUB_TOKEN }}
+#     # 6. Checkout do repositório de configuração do Helm
+#     - name: Checkout Helm config repo
+#       uses: actions/checkout@v3
+#       with:
+#         repository: https://github.com/dcpilla/gitops-example.git
+#         path: sample-python-application/helm
+#         token: ${{ secrets.GITHUB_TOKEN }}
 
 
-    # 7. Atualizar a versão da imagem no values.yaml do ambiente correspondente
-    - name: Update image version in Helm values
-      run: |
-        cd helm-config
-        ENVIRONMENT="dev"  # Defina o ambiente dinamicamente (ex: usando uma variável de ambiente ou input)
-        sed -i "s|image: dcpilla/${{ GITHUB_REPOSITORY_NAME_PART }}:.*|image: dcpilla/${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}|g" values-$ENVIRONMENT.yaml
-        git config --global user.name "Deivid Pilla"
-        git config --global user.email "deivid@dcpilla.eti.br"
-        git add .
-        git commit -m "Update image version to ${{ GITHUB_SHA_SHORT }} for $ENVIRONMENT"
-        git push
+#     # 7. Atualizar a versão da imagem no values.yaml do ambiente correspondente
+#     - name: Update image version in Helm values
+#       run: |
+#         cd helm-config
+#         ENVIRONMENT="dev"  # Defina o ambiente dinamicamente (ex: usando uma variável de ambiente ou input)
+#         sed -i "s|image: dcpilla/${{ GITHUB_REPOSITORY_NAME_PART }}:.*|image: dcpilla/${{ GITHUB_REPOSITORY_NAME_PART }}:${{ GITHUB_SHA_SHORT }}|g" values-$ENVIRONMENT.yaml
+#         git config --global user.name "Deivid Pilla"
+#         git config --global user.email "deivid@dcpilla.eti.br"
+#         git add .
+#         git commit -m "Update image version to ${{ GITHUB_SHA_SHORT }} for $ENVIRONMENT"
+#         git push
 
